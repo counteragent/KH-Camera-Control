@@ -3,7 +3,7 @@
 	"productName": "KH Camera Control",
 	"description": "Camera Control App for PTZOptics Network IP Cameras",
 	"author": "Jonathan Brimer",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"main": "main.js",
 	"scripts": {
 		"start": "electron .",

@@ -14,6 +14,11 @@ function createWindow () {
 
 	var lastWindowState = storage.get("lastWindowState");
 
+	let showFrame = false;
+	/*if (process.platform !== 'darwin') {
+		showFrame = true;
+	}*/
+
 	// lastWindowState = null;
 	// storage.set("lastWindowState", null);
 
@@ -21,7 +26,7 @@ function createWindow () {
 		lastWindowState = {
 			width: 400,
 			height: 430,
-			frame: false,
+			frame: showFrame,
 			resizable: false
 		}
 	}
@@ -29,9 +34,9 @@ function createWindow () {
 	mainWindow = new BrowserWindow({
 		x: lastWindowState.x,
 		y: lastWindowState.y,
-		width: lastWindowState.width,
-		height: lastWindowState.height,
-		frame: false,
+		width: 400,
+		height: 430,
+		frame: showFrame,
 		resizable: false
 	});
 
@@ -55,7 +60,7 @@ function createWindow () {
 			y: bounds.y,
 			width: bounds.width,
 			height: bounds.height,
-			frame: false,
+			frame: showFrame,
 			resizable: false
 		});
 	});
@@ -73,11 +78,7 @@ function createWindow () {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-	// On macOS it is common for applications and their menu bar
-	// to stay active until the user quits explicitly with Cmd + Q
-	/*if (process.platform !== 'darwin') {
-		app.quit();
-	}*/
+	app.quit();
 });
 
 app.on('activate', () => {

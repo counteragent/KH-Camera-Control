@@ -710,23 +710,165 @@ Mousetrap.bind('z', function(e) {
 	return false;
 }, 'keyup');
 
-
-// PRESETS MODAL
-Mousetrap.bind('command+.', function(e) {
-	$('#set_presets').modal('toggle');
-	return false;
-});
-
-// PREFERENCES MODAL
-Mousetrap.bind('command+,', function(e) {
-	$('#cam_adjust_control_settings').modal('toggle');
-	return false;
-});
-
 const {remote} = require('electron');
-const {app} = remote;
+const {app, Menu, BrowserWindow} = remote;
+const name = app.getName();
+
+/*let win = BrowserWindow.getFocusedWindow();
+let initBounds = win.getBounds();
+
+$('#cam_adjust_control_settings, #set_presets').on('shown.bs.modal', function (e) {
+	resizeWindow('show');
+});
+
+$('#cam_adjust_control_settings, #set_presets').on('hidden.bs.modal', function (e) {
+	resizeWindow('hide');
+});
+
+function resizeWindow(action = 'show') {
+	if (action === 'show') {
+		win.setSize(480, 540);
+	} else if (action === 'hide') {
+		win.setSize(initBounds.width, initBounds.height);
+	}
+}*/
 
 app.on('before-quit', () => {
 	// reset the camera to home position before closing the application
 	cam_pantilt(1, 'home');
 })
+
+const template = [
+  {
+    role: 'window',
+    submenu: [
+      {
+        role: 'minimize'
+      },
+      {
+        role: 'close'
+      }
+    ]
+  },
+  {
+    role: 'help',
+    submenu: [
+      {
+        label: 'Learn More',
+        click () { require('electron').shell.openExternal('https://propernerd.com/kh-camera-control') }
+      }
+    ]
+  }
+]
+
+if (process.platform === 'darwin') {
+  template.unshift({
+    label: name,
+    submenu: [
+      {
+        role: 'about',
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Preferences',
+        accelerator: 'CmdOrCtrl+,',
+          click: function() {
+            $('#cam_adjust_control_settings').modal('toggle');
+        },
+        role: 'preferences'
+      },
+      {
+        label: 'Presets',
+        accelerator: 'CmdOrCtrl+.',
+          click: function() {
+            $('#set_presets').modal('toggle');
+        },
+      },
+      {
+        type: 'separator'
+      },
+      {
+        role: 'services',
+        submenu: []
+      },
+      {
+        type: 'separator'
+      },
+      {
+        role: 'hide'
+      },
+      {
+        role: 'hideothers'
+      },
+      {
+        role: 'unhide'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        role: 'quit'
+      }
+    ]
+  })
+  // Window menu.
+  template[1].submenu = [
+    {
+      label: 'Close',
+      accelerator: 'CmdOrCtrl+W',
+      role: 'close'
+    },
+    {
+      label: 'Minimize',
+      accelerator: 'CmdOrCtrl+M',
+      role: 'minimize'
+    },
+    {
+      label: 'Zoom',
+      role: 'zoom'
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'Bring All to Front',
+      role: 'front'
+    }
+  ]
+} else {
+	// assume it's windows
+	template.unshift({
+	  label: name,
+	    submenu: [
+	        {
+	        	role: 'about',
+	        },
+	        {
+	          label: 'Preferences',
+	          accelerator: 'CmdOrCtrl+,',
+	            click: function() {
+	              $('#cam_adjust_control_settings').modal('toggle');
+	          },
+	          role: 'preferences'
+	        },
+	        {
+	          label: 'Presets',
+	          accelerator: 'CmdOrCtrl+.',
+	            click: function() {
+	              $('#set_presets').modal('toggle');
+	          },
+	        },
+	        {
+	            label: 'Quit',
+	            click: () => {
+	                app.quit();
+	            }
+	        }
+	    ]
+	});
+}
+
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
