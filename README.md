@@ -7,6 +7,14 @@ All the components of this project are built using web technologies. Javascript,
 
 If you have any bugs or issues to report, please post them [here](https://github.com/counteragent/Camera-Control/issues).
 
+## Keyboard Shortcuts
+
+- Preferences/settings menu `Command` + `,` (Windows: `CTRL` + `,`)
+- Presets menu `Command` + `.` (Windows: `CTRL` + `.`)
+- Pan/Tilt camera (arrow keys) `up`, `down`, `left`, `right`
+- Zoom in/out `a`, `z`
+- Reset camera to home position `home`
+
 ## Building the Electron App
 
 In order to build the Electron app you'll need the following:
