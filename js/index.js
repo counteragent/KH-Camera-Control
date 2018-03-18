@@ -3,29 +3,29 @@ var camera_ip = "192.168.0.190";
 var base_url = "http://" + camera_ip + "/cgi-bin";
 // config defaults
 var defaults = {
-    ip: camera_ip,
-    flip: 1,
-    mirror: 1,
-    invertcontrols: 1,
-    infinitypt: 0,
-    infinityzoom: 0,
-    infinityfocus: 0,
-    panspeed: 8,
-    zoomspeed: 5,
-    tiltspeed: 8,
-    focusspeed: 3,
-    autopaninterval: 60,
+	ip: camera_ip,
+	flip: 1,
+	mirror: 1,
+	invertcontrols: 1,
+	infinitypt: 0,
+	infinityzoom: 0,
+	infinityfocus: 0,
+	panspeed: 8,
+	zoomspeed: 5,
+	tiltspeed: 8,
+	focusspeed: 3,
+	autopaninterval: 60,
 };
 var config = defaults;
 config.ip = camera_ip;
 
 function get_config () {
 	var result = localStorage.getItem('configStorage');
-  if (!result) {
-    return config;
-  } else {
-  	return JSON.parse(result);
-  }
+	if (!result) {
+	return config;
+	} else {
+	return JSON.parse(result);
+	}
 }
 
 function save_config () {
@@ -53,7 +53,7 @@ function run_action (action_url) {
 // setup all the initial configuration and standard settings
 function config_init () {
 
-  config = get_config();
+	config = get_config();
 	console.log(config);
 
 	// set the initial IP value for the camera ip input
@@ -714,24 +714,46 @@ const {remote} = require('electron');
 const {app, Menu, BrowserWindow} = remote;
 const name = app.getName();
 
-/*let win = BrowserWindow.getFocusedWindow();
+let win = BrowserWindow.getFocusedWindow();
 let initBounds = win.getBounds();
 
+const preferencesModalBounds = {
+	width : 480,
+	height : 560
+};
+
+const presetsModalBounds = {
+	width : 480,
+	height : 600
+};
+
+let modalCount = 0;
+
 $('#cam_adjust_control_settings, #set_presets').on('shown.bs.modal', function (e) {
-	resizeWindow('show');
+	modalCount++;
+	console.log('shown', modalCount)
+	resizeWindow('show', $(this).attr('id'));
 });
 
 $('#cam_adjust_control_settings, #set_presets').on('hidden.bs.modal', function (e) {
-	resizeWindow('hide');
+	modalCount--;
+	console.log('hidden', modalCount)
+	resizeWindow('hide', $(this).attr('id'));
 });
 
-function resizeWindow(action = 'show') {
+function resizeWindow(action = 'show', element) {
+	console.log('resize', element);
+
 	if (action === 'show') {
-		win.setSize(480, 540);
+		if (element === 'cam_adjust_control_settings') {
+			win.setSize(preferencesModalBounds.width, preferencesModalBounds.height);
+		} else if (element === 'set_presets') {
+			win.setSize(presetsModalBounds.width, presetsModalBounds.height);
+		}
 	} else if (action === 'hide') {
 		win.setSize(initBounds.width, initBounds.height);
 	}
-}*/
+}
 
 app.on('before-quit', () => {
 	// reset the camera to home position before closing the application
@@ -739,134 +761,150 @@ app.on('before-quit', () => {
 })
 
 const template = [
-  {
-    role: 'window',
-    submenu: [
-      {
-        role: 'minimize'
-      },
-      {
-        role: 'close'
-      }
-    ]
-  },
-  {
-    role: 'help',
-    submenu: [
-      {
-        label: 'Learn More',
-        click () { require('electron').shell.openExternal('https://propernerd.com/kh-camera-control') }
-      }
-    ]
-  }
+	{
+	role: 'window',
+	submenu: [
+		{
+		role: 'minimize'
+		},
+		{
+		role: 'close'
+		}
+	]
+	},
+	{
+	role: 'help',
+	submenu: [
+		{
+		label: 'Learn More',
+		click () { require('electron').shell.openExternal('https://propernerd.com/kh-camera-control') }
+		}
+	]
+	}
 ]
 
 if (process.platform === 'darwin') {
-  template.unshift({
-    label: name,
-    submenu: [
-      {
-        role: 'about',
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Preferences',
-        accelerator: 'CmdOrCtrl+,',
-          click: function() {
-            $('#cam_adjust_control_settings').modal('toggle');
-        },
-        role: 'preferences'
-      },
-      {
-        label: 'Presets',
-        accelerator: 'CmdOrCtrl+.',
-          click: function() {
-            $('#set_presets').modal('toggle');
-        },
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'services',
-        submenu: []
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'hide'
-      },
-      {
-        role: 'hideothers'
-      },
-      {
-        role: 'unhide'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'quit'
-      }
-    ]
-  })
-  // Window menu.
-  template[1].submenu = [
-    {
-      label: 'Close',
-      accelerator: 'CmdOrCtrl+W',
-      role: 'close'
-    },
-    {
-      label: 'Minimize',
-      accelerator: 'CmdOrCtrl+M',
-      role: 'minimize'
-    },
-    {
-      label: 'Zoom',
-      role: 'zoom'
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Bring All to Front',
-      role: 'front'
-    }
-  ]
+	template.unshift({
+	label: name,
+	submenu: [
+		{
+		role: 'about',
+		},
+		{
+		type: 'separator'
+		},
+		{
+		label: 'Preferences',
+		accelerator: 'CmdOrCtrl+,',
+			click: function() {
+			if (modalCount <= 0) {
+				$('#cam_adjust_control_settings').modal('show');
+			} else {
+				$('#cam_adjust_control_settings').modal('hide');
+			}
+		},
+		role: 'preferences'
+		},
+		{
+		label: 'Presets',
+		accelerator: 'CmdOrCtrl+.',
+			click: function() {
+			if (modalCount <= 0) {
+				$('#set_presets').modal('show');
+			} else {
+				$('#set_presets').modal('hide');
+			}
+		},
+		},
+		{
+		type: 'separator'
+		},
+		{
+		role: 'services',
+		submenu: []
+		},
+		{
+		type: 'separator'
+		},
+		{
+		role: 'hide'
+		},
+		{
+		role: 'hideothers'
+		},
+		{
+		role: 'unhide'
+		},
+		{
+		type: 'separator'
+		},
+		{
+		role: 'quit'
+		}
+	]
+	})
+	// Window menu.
+	template[1].submenu = [
+	{
+		label: 'Close',
+		accelerator: 'CmdOrCtrl+W',
+		role: 'close'
+	},
+	{
+		label: 'Minimize',
+		accelerator: 'CmdOrCtrl+M',
+		role: 'minimize'
+	},
+	{
+		label: 'Zoom',
+		role: 'zoom'
+	},
+	{
+		type: 'separator'
+	},
+	{
+		label: 'Bring All to Front',
+		role: 'front'
+	}
+	]
 } else {
 	// assume it's windows
 	template.unshift({
-	  label: name,
-	    submenu: [
-	        {
-	        	role: 'about',
-	        },
-	        {
-	          label: 'Preferences',
-	          accelerator: 'CmdOrCtrl+,',
-	            click: function() {
-	              $('#cam_adjust_control_settings').modal('toggle');
-	          },
-	          role: 'preferences'
-	        },
-	        {
-	          label: 'Presets',
-	          accelerator: 'CmdOrCtrl+.',
-	            click: function() {
-	              $('#set_presets').modal('toggle');
-	          },
-	        },
-	        {
-	            label: 'Quit',
-	            click: () => {
-	                app.quit();
-	            }
-	        }
-	    ]
+		label: name,
+		submenu: [
+			{
+				role: 'about',
+			},
+			{
+				label: 'Preferences',
+				accelerator: 'CmdOrCtrl+,',
+				click: function() {
+					if (modalCount <= 0) {
+						$('#cam_adjust_control_settings').modal('show');
+					} else {
+						$('#cam_adjust_control_settings').modal('hide');
+					}
+				},
+				role: 'preferences'
+			},
+			{
+				label: 'Presets',
+				accelerator: 'CmdOrCtrl+.',
+				click: function() {
+					if (modalCount <= 0) {
+						$('#set_presets').modal('show');
+					} else {
+						$('#set_presets').modal('hide');
+					}
+				},
+			},
+			{
+				label: 'Quit',
+				click: () => {
+					app.quit();
+				}
+			}
+		]
 	});
 }
 

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Jonathan Brimer">
+	<title>Kingdom Hall Camera Control</title>
+
+	<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,user-scalable=no" />
+
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="./css/style.css"></head>
+<body class="preferences">
+	<div class="container" id="cam_adjust_control_settings">
+		<header>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h4 class="title" id="cam_adjust_control_settings_label">Preferences</h4>
+		</header>
+		<div class="content">
+
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<button class="form-control btn btn-primary adjust_setting" id="flip" data-action="flip">Flip</button>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<button class="form-control btn btn-primary adjust_setting" id="mirror" data-action="mirror">Mirror</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<button class="form-control btn btn-primary adjust_setting" id="invertcontrols" data-action="invertcontrols">Invert Controls</button>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<button class="form-control btn btn-primary adjust_setting" id="infinitypt" data-action="infinitypt">Infinity Pan/Tilt</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<a class="form-control btn btn-primary adjust_setting" data-action="infinityzoom" href="#settings">Infinity Zoom</a>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<a class="form-control btn btn-primary adjust_setting" data-action="infinityfocus" href="#settings">Infinity Focus</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-6">
+					<label>Pan Speed</label>
+					<select class="form-control change_setting" id="panspeed">
+						<option value="1">1 (Slow)</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8" selected>8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+						<option value="16">16</option>
+						<option value="17">17</option>
+						<option value="18">18</option>
+						<option value="19">19</option>
+						<option value="20">20 (Fast)</option>
+					</select>
+				</div>
+				<div class="col-xs-6">
+					<label>Zoom Speed</label>
+					<select class="form-control change_setting" id="zoomspeed">
+						<option value="0">0 (Slow)</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5" selected>5</option>
+						<option value="6">6</option>
+						<option value="7">7 (Fast)</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-6">
+					<label>Tilt Speed</label>
+					<select class="form-control change_setting" id="tiltspeed">
+						<option value="1">1 (Slow)</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8" selected>8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15 (Fast)</option>
+					</select>
+				</div>
+				<div class="col-xs-6">
+					<label>Focus Speed</label>
+					<select class="form-control change_setting" id="focusspeed">
+						<option value="0">0 (Slow)</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3" selected>3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7 (Fast)</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-6">
+					<label>Auto Pan Interval</label>
+					<select class="form-control change_setting" id="autopaninterval">
+						<option value="30">30 Seconds</option>
+						<option value="45">45 Seconds</option>
+						<option value="60" selected>1 Minute</option>
+						<option value="90">1 Minute, 30 Seconds</option>
+						<option value="120">2 Minutes</option>
+					</select>
+				</div>
+				<div class="col-xs-6">
+
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-6">
+					<label for="cam_ip">IP Address</label>
+					<input class="form-control" type="text" id="cam_ip" value=""></div>
+				<div class="col-xs-6">
+					<label>&nbsp;</label>
+					<button class="btn btn-default form-control reload_cam">Reload Camera</button>
+				</div>
+			</div>
+
+		</div>
+		<footer>
+			<button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+		</footer>
+	</div>
+</body>
+</html>
+
+<!-- Insert this line above script imports  -->
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+<script src="./js/jquery-2.1.4.min.js" type="text/javascript"></script>
+<script src="./js/bootstrap.min.js" type="text/javascript"></script>
+<script src="./js/preferences.js" type="text/javascript"></script>
+
+<!-- Insert this line after script imports -->
+<script>if (window.module) module = window.module;</script>
